@@ -1,6 +1,5 @@
 package org.traccar.geocode;
 
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class GoogleReverseGeocoderTest {
@@ -8,7 +7,7 @@ public class GoogleReverseGeocoderTest {
     @Test
     public void testGetAddress() {
 
-        ReverseGeocoder reverseGeocoder = new GoogleReverseGeocoder();
+        ReverseGeocoder reverseGeocoder = new GoogleReverseGeocoder(null);
         
         /*assertEquals(
                 "ulitsa Morskiye dubki, 2, Lisy Nos, Saint Petersburg, Russia, 197755",

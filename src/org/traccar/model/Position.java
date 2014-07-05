@@ -22,6 +22,33 @@ import java.util.Date;
  */
 public class Position extends Data {
 
+
+    /**
+     * The command from the device, e.g. GTTRI, GTSOS etc
+     */
+    private String command;
+
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
+    /**
+     * The type of the command, e.g. position, panic, movement, etc - expressed by an enum
+     */
+    private Integer type;
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     /**
      * Time (UTC)
      */
@@ -124,6 +151,69 @@ public class Position extends Data {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /**
+     * Temperature
+     */
+    private Double temperature;
+
+    public Double getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
+    }
+
+    private String mcc;
+
+    public String getMcc() {
+        return mcc;
+    }
+
+    public void setMcc(String mcc) {
+        this.mcc = mcc;
+    }
+
+    private String mnc;
+
+    public String getMnc() {
+        return mnc;
+    }
+
+    public void setMnc(String mnc) {
+        this.mnc = mnc;
+    }
+
+    private String lac;
+
+    public String getLac() {
+        return lac;
+    }
+
+    public void setLac(String lac) {
+        this.lac = lac;
+    }
+
+    private String cell;
+
+    public String getCell() {
+        return cell;
+    }
+
+    public void setCell(String cell) {
+        this.cell = cell;
+    }
+
+    private Integer batteryPerc;
+
+    public Integer getBatteryPerc() {
+        return batteryPerc;
+    }
+
+    public void setBatteryPerc(Integer batteryPerc) {
+        this.batteryPerc = batteryPerc;
     }
 
 }

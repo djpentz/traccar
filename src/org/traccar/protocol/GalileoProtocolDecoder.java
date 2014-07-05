@@ -175,7 +175,7 @@ public class GalileoProtocolDecoder extends BaseProtocolDecoder {
         }
 
         sendReply(channel, buf.readUnsignedShort());
-        
+
         for (Position p : positions) {
             p.setDeviceId(deviceId);
 

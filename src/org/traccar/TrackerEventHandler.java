@@ -16,6 +16,7 @@
 package org.traccar;
 
 import java.util.List;
+
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.timeout.IdleStateAwareChannelHandler;
 import org.jboss.netty.handler.timeout.IdleStateEvent;
@@ -42,6 +43,7 @@ public class TrackerEventHandler extends IdleStateAwareChannelHandler {
     private void processSinglePosition(Position position) {
         if (position == null) {
             Log.info("processSinglePosition null message");
+            return;
         } else {
             StringBuilder s = new StringBuilder();
             s.append("device: ").append(position.getDeviceId()).append(", ");
@@ -56,6 +58,7 @@ public class TrackerEventHandler extends IdleStateAwareChannelHandler {
             Long id = dataManager.addPosition(position);
             if (id != null) {
                 dataManager.updateLatestPosition(position.getDeviceId(), id);
+                position.setId(id);
             }
         } catch (Exception error) {
             Log.warning(error);

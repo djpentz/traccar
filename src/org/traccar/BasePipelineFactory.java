@@ -15,20 +15,21 @@
  */
 package org.traccar;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBuffers;
 import org.jboss.netty.channel.*;
 import org.jboss.netty.handler.logging.LoggingHandler;
 import org.jboss.netty.handler.timeout.IdleStateHandler;
+import org.traccar.notify.NotificationManager;
 import org.traccar.geocode.ReverseGeocoder;
 import org.traccar.helper.Log;
 import org.traccar.model.DataManager;
 
 /**
-  * Base pipeline factory
-  */
+ * Base pipeline factory
+ */
 public abstract class BasePipelineFactory implements ChannelPipelineFactory {
 
     private TrackerServer server;
@@ -36,6 +37,15 @@ public abstract class BasePipelineFactory implements ChannelPipelineFactory {
     private Boolean loggerEnabled;
     private Integer resetDelay;
     private ReverseGeocoder reverseGeocoder;
+    private NotificationManager notificationManager;
+
+    // Handlers
+    private IdleStateHandler idleStateHandler;
+    private OpenChannelHandler openChannelHandler;
+    private StandardLoggingHandler stdLoggingHandler;
+    private ReverseGeocoderHandler reverseGeocoderHandler;
+    private TrackerEventHandler trackerEventHandler;
+    private NotificationHandler notificationHandler;
 
     /**
      * Open channel handler
@@ -72,7 +82,7 @@ public abstract class BasePipelineFactory implements ChannelPipelineFactory {
                 //InetSocketAddress a = (InetSocketAddress) event.getRemoteAddress();
                 //InetAddress b = a.getAddress();
                 //String s = b.getHostAddress();
-                
+
                 msg.append(((InetSocketAddress) event.getRemoteAddress()).getAddress().getHostAddress()).append("]");
 
                 // Append hex message
@@ -95,11 +105,26 @@ public abstract class BasePipelineFactory implements ChannelPipelineFactory {
         dataManager = serverManager.getDataManager();
         loggerEnabled = serverManager.isLoggerEnabled();
         reverseGeocoder = serverManager.getReverseGeocoder();
+        notificationManager = serverManager.getNotificationManager();
 
         String resetDelayProperty = serverManager.getProperties().getProperty(protocol + ".resetDelay");
         if (resetDelayProperty != null) {
             resetDelay = Integer.valueOf(resetDelayProperty);
         }
+        if (resetDelay != null) {
+            idleStateHandler = new IdleStateHandler(GlobalTimer.getTimer(), resetDelay, 0, 0);
+        }
+        openChannelHandler = new OpenChannelHandler(server);
+        if (loggerEnabled) {
+            stdLoggingHandler = new StandardLoggingHandler();
+        }
+        if (reverseGeocoder != null) {
+            reverseGeocoderHandler = new ReverseGeocoderHandler(reverseGeocoder);
+        }
+        if (notificationManager != null) {
+            notificationHandler = new NotificationHandler(notificationManager);
+        }
+        trackerEventHandler = new TrackerEventHandler(dataManager);
     }
 
     protected DataManager getDataManager() {
@@ -111,18 +136,21 @@ public abstract class BasePipelineFactory implements ChannelPipelineFactory {
     @Override
     public ChannelPipeline getPipeline() {
         ChannelPipeline pipeline = Channels.pipeline();
-        if (resetDelay != null) {
-            pipeline.addLast("idleHandler", new IdleStateHandler(GlobalTimer.getTimer(), resetDelay, 0, 0));
+        if (idleStateHandler != null) {
+            pipeline.addLast("idleHandler", idleStateHandler);
         }
-        pipeline.addLast("openHandler", new OpenChannelHandler(server));
-        if (loggerEnabled) {
-            pipeline.addLast("logger", new StandardLoggingHandler());
+        pipeline.addLast("openHandler", openChannelHandler);
+        if (stdLoggingHandler != null) {
+            pipeline.addLast("logger", stdLoggingHandler);
         }
         addSpecificHandlers(pipeline);
-        if (reverseGeocoder != null) {
-            pipeline.addLast("geocoder", new ReverseGeocoderHandler(reverseGeocoder));
+        if (reverseGeocoderHandler != null) {
+            pipeline.addLast("geocoder", reverseGeocoderHandler);
         }
-        pipeline.addLast("handler", new TrackerEventHandler(dataManager));
+        if (notificationHandler != null) {
+            pipeline.addLast("notification", notificationHandler);
+        }
+        pipeline.addLast("handler", trackerEventHandler);
         return pipeline;
     }
 

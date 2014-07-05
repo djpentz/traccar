@@ -28,11 +28,22 @@ public class GoogleReverseGeocoder implements ReverseGeocoder {
 
     private final static String MARKER = "\"formatted_address\" : \"";
 
+    private String googleKey;
+
+    public GoogleReverseGeocoder(String googleKey) {
+        this.googleKey = googleKey;
+    }
+
     @Override
     public String getAddress(double latitude, double longitude) {
+        if (true) return null;
 
         try {
-            URL url = new URL("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&sensor=false");
+            String urlStr = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latitude + "," + longitude + "&sensor=false";
+            if (googleKey != null) {
+                urlStr += "&key=" + googleKey;
+            }
+            URL url = new URL(urlStr);
             URLConnection connection = url.openConnection();
 
             connection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");

@@ -24,6 +24,7 @@ import java.util.*;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+
 import org.traccar.helper.AdvancedConnection;
 import org.traccar.helper.DriverDelegate;
 import org.traccar.helper.Log;
@@ -58,7 +59,7 @@ public class DatabaseDataManager implements DataManager {
 
             if (driverFile != null) {
                 URL url = new URL("jar:file:" + new File(driverFile).getAbsolutePath() + "!/");
-                URLClassLoader cl = new URLClassLoader(new URL[] { url });
+                URLClassLoader cl = new URLClassLoader(new URL[]{url});
                 Driver d = (Driver) Class.forName(driver, true, cl).newInstance();
                 DriverManager.registerDriver(new DriverDelegate(d));
             } else {
@@ -120,7 +121,7 @@ public class DatabaseDataManager implements DataManager {
 
         if (devices == null || !devices.containsKey(imei)) {
             devices = new HashMap<String, Device>();
-            for (Device device: getDevices()) {
+            for (Device device : getDevices()) {
                 devices.put(device.getImei(), device);
             }
         }
@@ -135,6 +136,8 @@ public class DatabaseDataManager implements DataManager {
             queryAddPosition.prepare(Statement.RETURN_GENERATED_KEYS);
 
             queryAddPosition.setLong("device_id", position.getDeviceId());
+            queryAddPosition.setString("command", position.getCommand());
+            queryAddPosition.setInt("type", position.getType());
             queryAddPosition.setTimestamp("time", position.getTime());
             queryAddPosition.setBoolean("valid", position.getValid());
             queryAddPosition.setDouble("altitude", position.getAltitude());
@@ -143,8 +146,14 @@ public class DatabaseDataManager implements DataManager {
             queryAddPosition.setDouble("speed", position.getSpeed());
             queryAddPosition.setDouble("course", position.getCourse());
             queryAddPosition.setString("address", position.getAddress());
+            queryAddPosition.setDouble("temperature", position.getTemperature());
+            queryAddPosition.setString("mcc", position.getMcc());
+            queryAddPosition.setString("mnc", position.getMnc());
+            queryAddPosition.setString("lac", position.getLac());
+            queryAddPosition.setString("cell", position.getCell());
+            queryAddPosition.setInt("battery_perc", position.getBatteryPerc());
             queryAddPosition.setString("extended_info", position.getExtendedInfo());
-            
+
             // DELME: Temporary compatibility support
             XPath xpath = XPathFactory.newInstance().newXPath();
             try {
@@ -181,7 +190,7 @@ public class DatabaseDataManager implements DataManager {
 
     @Override
     public void updateLatestPosition(Long deviceId, Long positionId) throws SQLException {
-        
+
         if (queryUpdateLatestPosition != null) {
             queryUpdateLatestPosition.prepare();
 

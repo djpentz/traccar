@@ -132,7 +132,7 @@ public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
         extendedInfo.set("runtime", parser.group(index++));
         extendedInfo.set("cell", parser.group(index++));
         extendedInfo.set("state", parser.group(index++));
-        
+
         // ADC
         extendedInfo.set("adc1", Integer.parseInt(parser.group(index++), 16));
         extendedInfo.set("adc2", Integer.parseInt(parser.group(index++), 16));
@@ -142,7 +142,7 @@ public class MeitrackProtocolDecoder extends BaseProtocolDecoder {
         }
         extendedInfo.set("battery", Integer.parseInt(parser.group(index++), 16));
         extendedInfo.set("power", Integer.parseInt(parser.group(index++), 16));
-        
+
         // Extended info
         position.setExtendedInfo(extendedInfo.toString());
 
