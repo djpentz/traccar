@@ -34,10 +34,17 @@ public class JesqueNotificationManager implements NotificationManager {
         mapper = new ObjectMapper();
     }
 
+    /**
+     * The event is triggered here, but users of this tracking server will neeed to
+     * ensure the event is consumed by a Jesque job called "PositionEventJob"
+     * somewhere else.
+     * @param position The position reported by the device
+     * @throws Exception Some'ert went wrong
+     */
     @Override
     public void triggerEvent(Position position) throws Exception {
         final Client client = new ClientImpl(config);
-        Job job = new Job("PositionEvent", buildPositionStr(position));
+        Job job = new Job("PositionEventJob", buildPositionStr(position));
         try {
             client.enqueue(NOTIFICATION_QUEUE_NAME, job);
         } finally {
