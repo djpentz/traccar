@@ -6,6 +6,7 @@ import net.greghaines.jesque.ConfigBuilder;
 import net.greghaines.jesque.Job;
 import net.greghaines.jesque.client.Client;
 import net.greghaines.jesque.client.ClientImpl;
+import org.traccar.message.MessageType;
 import org.traccar.model.Position;
 
 /**
@@ -38,6 +39,7 @@ public class JesqueNotificationManager implements NotificationManager {
      * The event is triggered here, but users of this tracking server will neeed to
      * ensure the event is consumed by a Jesque job called "PositionEventJob"
      * somewhere else.
+     *
      * @param position The position reported by the device
      * @throws Exception Some'ert went wrong
      */
@@ -46,13 +48,18 @@ public class JesqueNotificationManager implements NotificationManager {
         final Client client = new ClientImpl(config);
         Job job = new Job("PositionEventJob", buildPositionStr(position));
         try {
-            client.enqueue(NOTIFICATION_QUEUE_NAME, job);
+            if (position.getType() == MessageType.PANIC.getValue()) {
+                client.priorityEnqueue(NOTIFICATION_QUEUE_NAME, job);
+            } else {
+                client.enqueue(NOTIFICATION_QUEUE_NAME, job);
+            }
+
         } finally {
             client.end();
         }
     }
 
     private String buildPositionStr(Position position) throws Exception {
-            return mapper.writeValueAsString(position);
+        return mapper.writeValueAsString(position);
     }
 }
