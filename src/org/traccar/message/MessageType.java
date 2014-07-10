@@ -16,7 +16,9 @@ public enum MessageType {
     PLEASE_CALL_ME(5),
     SPEEDING(6),
     SLEEP_TIMEOUT(7),
-    GEOFENCE_ALERT(8);
+    GEOFENCE_ALERT(8),
+    TEMP_ABOVE(9),
+    TEMP_BELOW(10);
 
     private int value;
 
