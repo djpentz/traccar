@@ -61,6 +61,7 @@ public class Gl200ProtocolDecoder extends BaseProtocolDecoder {
 
         // Parse message
         Matcher parser = pattern.matcher(sentence);
+        System.out.println("GL200 -> " + sentence);
         if (!parser.matches()) {
             return null;
         }

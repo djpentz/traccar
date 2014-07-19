@@ -23,5 +23,6 @@ public class QueclinkMessages {
     public static final String GTFRI = "GTFRI";
     public static final String GTSOS = "GTSOS";
     public static final String GTMSA = "GTMSA";
+    public static final String GTCTN = "GTCTN";
 
 }

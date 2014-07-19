@@ -1,13 +1,14 @@
 package org.traccar.protocol.factory;
 
+import org.jboss.netty.channel.ChannelHandler;
 import org.traccar.ServerManager;
 import org.traccar.protocol.QueclinkProtocolDecoder;
 import org.traccar.protocol.parser.MessageParser;
+import org.traccar.protocol.parser.gl500.GTCTNParser;
 import org.traccar.protocol.parser.gt200.GTMSAParser;
 import org.traccar.protocol.parser.gt200.GTSOSParser;
 import org.traccar.protocol.parser.gt200.GTTRIParser;
 import org.traccar.protocol.parser.gv320.GTERIParser;
-import org.traccar.protocol.parser.gv55.GTFRIParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +56,13 @@ public class QueclinkDecoderFactory {
     public static QueclinkProtocolDecoder buildGT300Decoder(ServerManager mgr) {
         Map<String, MessageParser> parsers = new HashMap<String, MessageParser>();
         // No parsers implemented for this just yet - but add them here when they're done
+
+        return new QueclinkProtocolDecoder(mgr, parsers);
+    }
+
+    public static ChannelHandler buildGl500Decoder(ServerManager mgr) {
+        Map<String, MessageParser> parsers = new HashMap<String, MessageParser>();
+        parsers.put(GTCTN, new GTCTNParser());
 
         return new QueclinkProtocolDecoder(mgr, parsers);
     }

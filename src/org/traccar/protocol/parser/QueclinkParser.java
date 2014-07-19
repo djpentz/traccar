@@ -69,6 +69,26 @@ public abstract class QueclinkParser implements MessageParser {
         return part;
     }
 
+    protected String getReportId(String part) {
+        return part;
+    }
+
+    protected String getReportType(String part) {
+        return part;
+    }
+
+    protected String getMovementStatus(String part) {
+        return part;
+    }
+
+    protected Double getTemperature(String part) {
+        try {
+            return Double.parseDouble(part);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     protected Integer getNumber(String part) {
         try {
             return Integer.parseInt(part);
@@ -218,6 +238,14 @@ public abstract class QueclinkParser implements MessageParser {
     }
 
     protected Integer getAnalogInput2(String part) {
+        try {
+            return Integer.parseInt(part);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    protected Integer getBatteryPerc(String part) {
         try {
             return Integer.parseInt(part);
         } catch (NumberFormatException e) {

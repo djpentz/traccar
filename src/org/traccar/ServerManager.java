@@ -179,6 +179,7 @@ public class ServerManager {
         // Queclink devices
         initGl100Server("gl100");
         initGl200Server("gl200");
+        initGl500Server("gl500");
         initGt200Server("gt200");
         initGv320Server("gv320");
         initGv55Server("gv55");
@@ -363,6 +364,25 @@ public class ServerManager {
                     pipeline.addLast("stringDecoder", new StringDecoder());
                     pipeline.addLast("stringEncoder", new StringEncoder());
                     pipeline.addLast("objectDecoder", QueclinkDecoderFactory.buildGV320Decoder(ServerManager.this));
+                }
+            });
+        }
+    }
+
+    private void initGl500Server(String protocol) throws SQLException {
+        if (isProtocolEnabled(properties, protocol)) {
+            serverList.add(new TrackerServer(this, new ServerBootstrap(), protocol) {
+                @Override
+                protected void addSpecificHandlers(ChannelPipeline pipeline) {
+                    byte delimiter1[] = {(byte) '$'};
+                    byte delimiter2[] = {(byte) '\0'};
+                    pipeline.addLast("frameDecoder",
+                            new DelimiterBasedFrameDecoder(1024,
+                                    ChannelBuffers.wrappedBuffer(delimiter1),
+                                    ChannelBuffers.wrappedBuffer(delimiter2)));
+                    pipeline.addLast("stringDecoder", new StringDecoder());
+                    pipeline.addLast("stringEncoder", new StringEncoder());
+                    pipeline.addLast("objectDecoder", QueclinkDecoderFactory.buildGl500Decoder(ServerManager.this));
                 }
             });
         }
