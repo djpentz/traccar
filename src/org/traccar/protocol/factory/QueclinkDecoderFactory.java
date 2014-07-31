@@ -4,11 +4,6 @@ import org.jboss.netty.channel.ChannelHandler;
 import org.traccar.ServerManager;
 import org.traccar.protocol.QueclinkProtocolDecoder;
 import org.traccar.protocol.parser.MessageParser;
-import org.traccar.protocol.parser.gl500.GTCTNParser;
-import org.traccar.protocol.parser.gt200.GTMSAParser;
-import org.traccar.protocol.parser.gt200.GTSOSParser;
-import org.traccar.protocol.parser.gt200.GTTRIParser;
-import org.traccar.protocol.parser.gv320.GTERIParser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,16 +20,17 @@ public class QueclinkDecoderFactory {
 
     public static QueclinkProtocolDecoder buildGV320Decoder(ServerManager mgr) {
         Map<String, MessageParser> parsers = new HashMap<String, MessageParser>();
-        parsers.put(GTERI, new GTERIParser());
+        parsers.put(GTERI, new org.traccar.protocol.parser.gv320.GTERIParser());
+        parsers.put(GTSOS, new org.traccar.protocol.parser.gv320.GTSOSParser());
 
         return new QueclinkProtocolDecoder(mgr, parsers);
     }
 
     public static QueclinkProtocolDecoder buildGT200Decoder(ServerManager mgr) {
         Map<String, MessageParser> parsers = new HashMap<String, MessageParser>();
-        parsers.put(GTMSA, new GTMSAParser());
-        parsers.put(GTSOS, new GTSOSParser());
-        parsers.put(GTTRI, new GTTRIParser());
+        parsers.put(GTMSA, new org.traccar.protocol.parser.gt200.GTMSAParser());
+        parsers.put(GTSOS, new org.traccar.protocol.parser.gt200.GTSOSParser());
+        parsers.put(GTTRI, new org.traccar.protocol.parser.gt200.GTTRIParser());
 
         return new QueclinkProtocolDecoder(mgr, parsers);
     }
@@ -42,6 +38,8 @@ public class QueclinkDecoderFactory {
     public static QueclinkProtocolDecoder buildGV55Decoder(ServerManager mgr) {
         Map<String, MessageParser> parsers = new HashMap<String, MessageParser>();
         parsers.put(GTFRI, new org.traccar.protocol.parser.gv55.GTFRIParser());
+        parsers.put(GTSOS, new org.traccar.protocol.parser.gv55.GTSOSParser());
+        parsers.put(GTCRA, new org.traccar.protocol.parser.gv55.GTCRAParser());
 
         return new QueclinkProtocolDecoder(mgr, parsers);
     }
@@ -62,7 +60,7 @@ public class QueclinkDecoderFactory {
 
     public static ChannelHandler buildGl500Decoder(ServerManager mgr) {
         Map<String, MessageParser> parsers = new HashMap<String, MessageParser>();
-        parsers.put(GTCTN, new GTCTNParser());
+        parsers.put(GTCTN, new org.traccar.protocol.parser.gl500.GTCTNParser());
 
         return new QueclinkProtocolDecoder(mgr, parsers);
     }
