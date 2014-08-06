@@ -9,6 +9,7 @@ import org.traccar.model.ExtendedInfoFormatter;
 import org.traccar.model.Position;
 import org.traccar.protocol.parser.QueclinkParser;
 import org.traccar.message.MessageType;
+import org.traccar.protocol.patterns.QueclinkMessages;
 
 import java.io.StringReader;
 import java.util.Date;
@@ -22,7 +23,7 @@ public class GTMSAParser extends QueclinkParser {
 
     @Override
     public String getCommand() {
-        return "GTMSA";
+        return QueclinkMessages.GTMSA;
     }
 
     @Override

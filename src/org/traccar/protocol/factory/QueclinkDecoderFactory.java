@@ -58,9 +58,16 @@ public class QueclinkDecoderFactory {
         return new QueclinkProtocolDecoder(mgr, parsers);
     }
 
-    public static ChannelHandler buildGl500Decoder(ServerManager mgr) {
+    public static QueclinkProtocolDecoder buildGl500Decoder(ServerManager mgr) {
         Map<String, MessageParser> parsers = new HashMap<String, MessageParser>();
         parsers.put(GTCTN, new org.traccar.protocol.parser.gl500.GTCTNParser());
+
+        return new QueclinkProtocolDecoder(mgr, parsers);
+    }
+
+    public static QueclinkProtocolDecoder buildGl200Decoder(ServerManager mgr) {
+        Map<String, MessageParser> parsers = new HashMap<String, MessageParser>();
+        parsers.put(GTFRI, new org.traccar.protocol.parser.gl200.GTFRIParser());
 
         return new QueclinkProtocolDecoder(mgr, parsers);
     }

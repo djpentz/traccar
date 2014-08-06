@@ -190,6 +190,8 @@ public abstract class QueclinkParser implements MessageParser {
      * @return A km value
      */
     protected Double getMileage(String part) {
+        if (part == null || part.trim().equals("")) return null;
+
         try {
             return Double.parseDouble(part);
         } catch (NumberFormatException e) {

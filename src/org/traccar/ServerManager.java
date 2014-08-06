@@ -325,7 +325,7 @@ public class ServerManager {
                                     ChannelBuffers.wrappedBuffer(delimiter2)));
                     pipeline.addLast("stringDecoder", new StringDecoder());
                     pipeline.addLast("stringEncoder", new StringEncoder());
-                    pipeline.addLast("objectDecoder", new Gl200ProtocolDecoder(ServerManager.this));
+                    pipeline.addLast("objectDecoder", QueclinkDecoderFactory.buildGl200Decoder(ServerManager.this));
                 }
             });
         }

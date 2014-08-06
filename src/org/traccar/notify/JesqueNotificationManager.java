@@ -48,7 +48,7 @@ public class JesqueNotificationManager implements NotificationManager {
         final Client client = new ClientImpl(config);
         Job job = new Job("PositionEventJob", buildPositionStr(position));
         try {
-            if (position.getType() == MessageType.PANIC.getValue()) {
+            if (position.getType() == MessageType.PANIC.getValue() || position.getType() == MessageType.ACCIDENT.getValue()) {
                 client.priorityEnqueue(NOTIFICATION_QUEUE_NAME, job);
             } else {
                 client.enqueue(NOTIFICATION_QUEUE_NAME, job);
