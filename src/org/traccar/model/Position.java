@@ -166,6 +166,30 @@ public class Position extends Data {
         this.temperature = temperature;
     }
 
+    private Double temp1;
+
+    public Double getTemp1() { return temp1; }
+
+    public void setTemp1(Double temp1) { this.temp1 = temp1; }
+
+    private Double temp2;
+
+    public Double getTemp2() { return temp2; }
+
+    public void setTemp2(Double temp2) { this.temp2 = temp2; }
+
+    private Double temp3;
+
+    public Double getTemp3() { return temp3; }
+
+    public void setTemp3(Double temp3) { this.temp3 = temp3; }
+
+    private Double temp4;
+
+    public Double getTemp4() { return temp4; }
+
+    public void setTemp4(Double temp4) { this.temp4 = temp4; }
+
     private String mcc;
 
     public String getMcc() {

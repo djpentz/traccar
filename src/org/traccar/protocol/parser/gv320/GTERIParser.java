@@ -13,6 +13,7 @@ import org.traccar.message.MessageType;
 import org.traccar.protocol.patterns.QueclinkMessages;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -86,8 +87,9 @@ public class GTERIParser extends QueclinkParser {
         if (expectFuelData) {
             digitFuelSensorData = getDigitFuelSensorData(list.get(i++));
         }
-        // Right now this only supports one devices data, but in theory there could be more
-        // than one set of data.
+        // The GV320 can have up to 4 devices attached to it - at this time we only expect
+        // to get temperature data.
+        List<Double> tempList = new ArrayList<Double>();
         String oneWireDeviceId = null;
         String oneWireDeviceType = null;
         String oneWireDeviceData = null;
@@ -97,6 +99,7 @@ public class GTERIParser extends QueclinkParser {
                 oneWireDeviceId = getOneWireDeviceId(list.get(i++));
                 oneWireDeviceType = getOneWireDeviceType(list.get(i++));
                 oneWireDeviceData = getOneWireDeviceData(list.get(i++));
+                tempList.add(convertHexTemperature(oneWireDeviceData));
             }
         }
         Date sendTime = getSendTime(list.get(i++));
@@ -110,6 +113,25 @@ public class GTERIParser extends QueclinkParser {
         position.setSpeed(speed);
         if (oneWireDeviceData != null && !oneWireDeviceData.trim().equals("")) {
             position.setTemperature(convertHexTemperature(oneWireDeviceData));
+        }
+        int count = 0;
+        // Set the various temperatures depending on how many we read from the message
+        for (Double temp : tempList) {
+            switch (count) {
+                case 0:
+                    position.setTemp1(temp);
+                    break;
+                case 1:
+                    position.setTemp2(temp);
+                    break;
+                case 2:
+                    position.setTemp3(temp);
+                    break;
+                case 3:
+                    position.setTemp4(temp);
+                    break;
+            }
+            count++;
         }
         position.setServerTime(new Date());
 

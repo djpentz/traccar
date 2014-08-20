@@ -80,7 +80,7 @@ public class GTFRIParser extends QueclinkParser {
         String lac = getLac(list.get(i++));
         String cellId = getCellId(list.get(i++));
         Double mileage = getMileage(list.get(i++));
-        Integer backupBatteryPerc = getBackupBatteryPerc(list.get(i++));
+        Integer backupPerc = getBackupBatteryPerc(list.get(i++));
         Date sendTime = getSendTime(list.get(i++));
         Integer countNumber = getCountNumber(list.get(i));
 

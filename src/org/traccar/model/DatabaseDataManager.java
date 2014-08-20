@@ -147,6 +147,10 @@ public class DatabaseDataManager implements DataManager {
             queryAddPosition.setDouble("course", position.getCourse());
             queryAddPosition.setString("address", position.getAddress());
             queryAddPosition.setDouble("temperature", position.getTemperature());
+            queryAddPosition.setDouble("temp1", position.getTemp1());
+            queryAddPosition.setDouble("temp2", position.getTemp2());
+            queryAddPosition.setDouble("temp3", position.getTemp3());
+            queryAddPosition.setDouble("temp4", position.getTemp4());
             queryAddPosition.setString("mcc", position.getMcc());
             queryAddPosition.setString("mnc", position.getMnc());
             queryAddPosition.setString("lac", position.getLac());
