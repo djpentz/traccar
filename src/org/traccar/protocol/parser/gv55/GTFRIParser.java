@@ -89,6 +89,8 @@ public class GTFRIParser extends QueclinkParser {
         position.setTime(sendTime);
         position.setSpeed(speed);
         position.setServerTime(new Date());
+        position.setGpsAccuracy(gpsAccuracy);
+        position.setBatteryPerc(backupBatteryPerc);
 
         // Cell information etc
         setConstantData(position, mcc, mnc, lac, cellId);

@@ -87,6 +87,7 @@ public class GTMSAParser extends QueclinkParser {
         position.setTime(sendTime);
         position.setSpeed(speed);
         position.setServerTime(new Date());
+        position.setGpsAccuracy(gpsAccuracy);
 
         // Cell information etc
         setConstantData(position, mcc, mnc, lac, cellId);

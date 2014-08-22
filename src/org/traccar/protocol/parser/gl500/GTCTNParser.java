@@ -89,6 +89,7 @@ public class GTCTNParser extends QueclinkParser {
         Integer countNumber = getCountNumber(list.get(i));
 
         position.setBatteryPerc(batteryPerc);
+        position.setGpsAccuracy(gpsAccuracy);
         position.setAltitude(altitude);
         position.setCourse(heading.doubleValue());
         position.setLatitude(latitude);
