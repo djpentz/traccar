@@ -155,6 +155,7 @@ public class DatabaseDataManager implements DataManager {
             queryAddPosition.setString("mnc", position.getMnc());
             queryAddPosition.setString("lac", position.getLac());
             queryAddPosition.setString("cell", position.getCell());
+            queryAddPosition.setInt("gps_accuracy", position.getGpsAccuracy());
             queryAddPosition.setInt("battery_perc", position.getBatteryPerc());
             queryAddPosition.setString("extended_info", position.getExtendedInfo());
 

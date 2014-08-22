@@ -240,4 +240,13 @@ public class Position extends Data {
         this.batteryPerc = batteryPerc;
     }
 
+    private Integer gpsAccuracy;
+
+    public Integer getGpsAccuracy() {
+        return gpsAccuracy;
+    }
+
+    public void setGpsAccuracy(Integer gpsAccuracy) {
+        this.gpsAccuracy = gpsAccuracy;
+    }
 }

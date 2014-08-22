@@ -138,10 +138,9 @@ public class GTERIParser extends QueclinkParser {
         // Cell information etc
         setConstantData(position, mcc, mnc, lac, cellId);
 
-        // Battery
-        if (backupBatteryPerc != null) {
-            position.setBatteryPerc(backupBatteryPerc);
-        }
+        // Battery and GPS accuracy
+        position.setGpsAccuracy(gpsAccuracy);
+        position.setBatteryPerc(backupBatteryPerc);
 
         position.setExtendedInfo(extendedInfo.toString());
 
